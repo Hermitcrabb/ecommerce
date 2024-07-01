@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from userauths.forms import UserRegisterform
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
+
 
 User = settings.AUTH_USER_MODEL
 
@@ -35,6 +36,7 @@ def register_views(request):
 
 def login_view(request):
     if request.user.is_authenticated:
+        messages.warning(request, f"Already logged in!!")
         return redirect("core:index")
     
     if request.method == "POST":
@@ -56,9 +58,15 @@ def login_view(request):
             return redirect("core:index")
 
         else:
-            message.warning(request, "User dosent exist, crate an account.")
+            messages.warning(request, "User dosent exist, crate an account.")
     context = {
         
     }   
-    return render(request, "userauths/sign.html", context)
+    return render(request, "userauths/sign-in.html", context)
 
+
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, "you logged out")
+    return redirect("userauths:sign-in")
