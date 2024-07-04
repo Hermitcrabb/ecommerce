@@ -21,7 +21,6 @@
     <link rel="stylesheet" href="{% static 'assets1/css/login.css' %}}">
     <link rel="stylesheet" href="{% static 'assets/css/login.css' %}}">
     
-    
 
 </head>
 
@@ -111,9 +110,12 @@
                     <a href="#"><img src="{% static 'img/core-img/heart.svg' %}" alt=""></a>
                 </div>
                 <!-- User Login Info -->
-                <div class="user-login-info">
-                    <a href="#"><img src="{% static 'img/core-img/user.svg' %}" alt=""></a>
-                    <!--<a href="{% userauths 'sign-in'%}"><img src="{% static 'img/core-ing/user.svg' %}" alt=""></a> -->
+                <div class="user-login-info"> 
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url "userauths:sign-out" %}" class="navbar-link">Sign out</a> 
+                    {% else %}
+                        <a href="{% url "userauths:sign-in" %}" class="navbar-link">Sign In</a> 
+                    {% endif %}
                 </div>
                 <!-- Cart Area -->
                 <div class="cart-area">
