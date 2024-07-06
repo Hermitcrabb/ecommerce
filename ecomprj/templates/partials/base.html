@@ -20,8 +20,10 @@
     <link rel="stylesheet" href="{% static 'style.css' %}">
     <link rel="stylesheet" href="{% static 'assets1/css/login.css' %}}">
     <link rel="stylesheet" href="{% static 'assets/css/login.css' %}}">
-    
+   <script src="https://cdn-script.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> 
 
+
+        
 </head>
 
 <body>
@@ -109,6 +111,10 @@
                 <div class="favourite-area">
                     <a href="#"><img src="{% static 'img/core-img/heart.svg' %}" alt=""></a>
                 </div>
+                <!-- Cart Area -->
+                <div class="cart-area">
+                    <a href="#" id="essenceCartBtn"><img src="{% static 'img/core-img/bag.svg' %}" alt=""> <span>3</span></a>
+                </div>
                 <!-- User Login Info -->
                 <div class="user-login-info"> 
                     {% if request.user.is_authenticated %}
@@ -116,14 +122,25 @@
                     {% else %}
                         <a href="{% url "userauths:sign-in" %}" class="navbar-link">Sign In</a> 
                     {% endif %}
-                </div>
-                <!-- Cart Area -->
-                <div class="cart-area">
-                    <a href="#" id="essenceCartBtn"><img src="{% static 'img/core-img/bag.svg' %}" alt=""> <span>3</span></a>
-                </div>
+                
             </div>
-
+                {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{message.tags}}">   
+                        <strong>{{ message }}</strong>    
+                    </div>
+                </div>
+                {% endfor %}
+                    {% endif %}
+                        <script>
+                            setTimeout (() => {
+                                $(".alert").alert("close");
+                                 },3000)
+                        </script>
+        
+            
         </div>
+
     </header>
 
     {% block content %}
