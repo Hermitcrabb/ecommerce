@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.contrib import admin
 from shortuuid.django_fields import ShortUUIDField
@@ -36,7 +37,7 @@ def user_directory_path(instance, filename):
         return 'user_{0}/{1}'.format(instance.user.id, filename)
 
 class Category(models.Model):
-   cid = models.UUIDField(unique=True, max_length=30)
+   cid = ShortUUIDField(unique=True,length=10, max_length=30,prefix="cid",alphabet="abcdefghi12345", editable=False)
    title= models.CharField(max_length=100, default="Shopify")
    image = models.ImageField(upload_to="categoryAdmin/",default="User.jpg")
 
@@ -48,43 +49,19 @@ def category_image(self):
     
 def __str__(self):
         return self.title
+
+def clean_uuid(self):
+        return self.uuid.replace('-', '')
+
 class Tags(models.Model):
         pass
         
-    
-class Seller(models.Model):
-        sid = models.UUIDField(unique=True, max_length=30)
-        
-        title= models.CharField(max_length=100, default="Seller Name")
-        image = models.ImageField(upload_to=user_directory_path, default="Seller.jpg")
-        description = models.TextField(null=True, blank=True, default= "This is the Seller")
-        
-        address = models.CharField(max_length=100, default="Street Name.")
-        contact = models.CharField(max_length=100,default="+977 number" )
-        Chat_resp_time = models.CharField(max_length=100, default="100")
-        Ship_on_time = models.CharField(max_length=100, default="100")
-        authentic_rating = models.CharField(max_length=100, default="100")
-        days_return = models.CharField(max_length=100, default="100")
-        warrenty_period = models.CharField(max_length=100, default="100")
-
-
-user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-
-class Meta:
-        verbose_name_plural = "Seller" 
-
-def seller_image(self):
-        return mark_safe('<img scr="%s" width="50" height="50" />' % (self.image.url))
-    
-def __str__(self):
-        return self.title
 
 class Product(models.Model):
-        pid = models.UUIDField(unique=True,max_length=30)
+        pid = ShortUUIDField(unique=True,length=10, max_length=30,prefix="pid",alphabet="abcdefghi12345", editable=False)
         
         user = models.ForeignKey(User, on_delete=models.SET_NULL,null=True)
-        category = models.ForeignKey(Category, on_delete=models.SET_NULL,null=True)
+        category = models.ForeignKey(Category, on_delete=models.SET_NULL,null=True,related_name="category")
         
         title= models.CharField(max_length=100, default="Title")
         image = models.ImageField(upload_to=user_directory_path, default="product.jpg")
@@ -94,7 +71,6 @@ class Product(models.Model):
         old_price = models.DecimalField(max_digits=10, decimal_places=2, default="1000")
 
         specifications = models.TextField(null=True, blank=True, default= "")
-        #tags = models.ForeignKey(Tags, on_delete=models.SET_NULL,null=True)
 
         product_status = models.CharField(choices=STATUS,max_length=10, default="in_review")
 
@@ -103,7 +79,7 @@ class Product(models.Model):
         featured = models.BooleanField(default=False)
         digital = models.BooleanField(default=False)
         
-        sku = ShortUUIDField(unique=True, max_length=10)
+        sku = ShortUUIDField(unique=True, max_length=50)
 
         date = models.DateTimeField(auto_now_add=True)
         update = models.DateTimeField(null=True, blank=True)
@@ -117,6 +93,9 @@ class Product(models.Model):
     
         def __str__(self):
             return self.title
+        
+        def clean_uuid(self):
+                return self.uuid.replace('-', '')
         
         def get_percentage(self):
                new_price = (self.price / self.old_price) * 100

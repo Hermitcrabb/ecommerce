@@ -162,6 +162,7 @@ img {
 
 /* Miscellaneous */
 .bg-img {
+  background-image: url(img/.bg-img/bg-1.jpg);
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat; }

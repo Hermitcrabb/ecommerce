@@ -2,7 +2,6 @@
 {% load static %}
 {% block content %}
 
-
     <!-- ##### Right Side Cart Area ##### -->
     <div class="cart-bg-overlay"></div>
 
@@ -84,28 +83,76 @@
     </div>
     <!-- ##### Right Side Cart End ##### -->
 
+    <div class="container">
+        <div class="row">
+                        <div class="single-product-wrapper">
+                            <div class="total-products">
+                                <p> We found <strong class="text-brand">{{products.count}}</strong> items for you!</p>
+                            </div>
+                                <h2>{{ category.title }}</h2> 
+                        </div>
 
-    <div class="contact-area d-flex align-items-center">
+                        {% for c in categories %}
+                        <!-- Single Product -->
+                        <div class="single-product-wrapper">
+                            
+                            <!-- Product Image -->
+                            <div class="post-thumb">
+                                <a href="{% url 'core:category' c.cid %}">
+                                    <img class="border-radius-15" src="{{c.image.url}}" alt="">
+                                </a>
+                                <div class="entry-content-2">
+                                    <h4 class="post-title mb-15">
+                                        <a href="{% url 'core:category' c.cid %}">{{c.title}}</a>
+                                    </h4>
+                                    
+                               
+                            </div>
+                            {% for p in products %}
+                                    <!-- Single Product -->
+                                    <div class="single-product-wrapper">
+                                    
+                                        <!-- Product Image -->
+                                        <div class="product-img">
+                                            <img src="{{ p.image.url }}" alt="">
+                                            
+                                             
+                                            <div class="product-badge offer-badge">
+                                                <span>-{{ p.get_percentage|floatformat:0}}%</span>
+                                            </div>
+                                            <!-- Favourite 
+                                            <div class="product-favourite">
+                                                <a href="#" class="favme fa fa-heart"></a>
+                                            </div>-->
+                                        </div>
+                                        <!-- Product Description -->
+                                        <div class="product-description">
+                                            <span>{{ p.category.title }}</span>
+                                            <a href="single_product_details">
+                                                <h6>{{ p.title }}</h6>
+                                            </a>
+                                            <p class="product-price">{{ p.price}}</p>
+                                            <!-- Hover Content -->
+                                            <div class="hover-content">
+            
+                                                <!-- Add to Cart -->
+                                                <div class="add-to-cart-btn">
+                                                    <a href="#" class="btn essence-btn">Add to Cart</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                            
+                        {% endfor %}
 
-        <div class="google-map">
-            <div id="googleMap"></div>
-        </div>
-
-        <div class="contact-info">
-            <h2>How to Find Us</h2>
-            <p>Mauris viverra cursus ante laoreet eleifend. Donec vel fringilla ante. Aenean finibus velit id urna vehicula, nec maximus est sollicitudin.</p>
-
-            <div class="contact-address mt-50">
-                <p><span>address:</span> 10 Suffolk st Soho, London, UK</p>
-                <p><span>telephone:</span> +12 34 567 890</p>
-                <p><a href="mailto:contact@essence.com">contact@essence.com</a></p>
+                        
+            
             </div>
         </div>
-
     </div>
 
-    <!-- Google Maps -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwuyLRa1uKNtbgx6xAJVmWy-zADgegA2s"></script>
-    <script src="{% static 'js/map-active.js' %}"></script>
 
-{% endblock content%}
+</div>
+
+   
+{%endblock content %}
