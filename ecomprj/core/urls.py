@@ -1,14 +1,15 @@
 from django.urls import path
-from . import views
+from  core.views import category,products_list,contact,shop,checkout,index,category_items
 
 app_name = "core"
 
 urlpatterns = [
-    path("", views.index, name = "index"),    
-    path("checkout/", views.checkout, name= "checkout"),
-    path("contact/", views.contact, name= "contact"),
-    path("shop/", views.shop, name= "shop"),
-    path("single_product_details/", views.single_product_details, name= "single_product_details"),
-    path("category/<cid>/",views.category,name="category")
+    path("", index, name = "index"),    
+    path("checkout/", checkout, name= "checkout"),
+    path("contact/", contact, name= "contact"),
+    path("shop/", shop, name= "shop"),
+    path("products/<str:pid>/", products_list, name= "products"),
+    path("category/",category,name="category"),
+    path("category_items/<str:cid>/",category_items,name="category_items"),
 
 ]

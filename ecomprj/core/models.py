@@ -37,7 +37,7 @@ def user_directory_path(instance, filename):
         return 'user_{0}/{1}'.format(instance.user.id, filename)
 
 class Category(models.Model):
-   cid = ShortUUIDField(unique=True,length=10, max_length=30,prefix="cid",alphabet="abcdefghi12345", editable=False)
+   cid = ShortUUIDField(unique=True,length=10, max_length=30,prefix="cid",alphabet="abcdefghi12345")
    title= models.CharField(max_length=100, default="Shopify")
    image = models.ImageField(upload_to="categoryAdmin/",default="User.jpg")
 
@@ -58,7 +58,7 @@ class Tags(models.Model):
         
 
 class Product(models.Model):
-        pid = ShortUUIDField(unique=True,length=10, max_length=30,prefix="pid",alphabet="abcdefghi12345", editable=False)
+        pid = ShortUUIDField(unique=True,length=10, max_length=30,prefix="pid",alphabet="abcdefghi12345")
         
         user = models.ForeignKey(User, on_delete=models.SET_NULL,null=True)
         category = models.ForeignKey(Category, on_delete=models.SET_NULL,null=True,related_name="category")
@@ -102,8 +102,8 @@ class Product(models.Model):
                return new_price
         
 class ProductImages(models.Model):
-    images = models.ImageField(upload_to="product-images", default="product.jpg")
-    Product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    images = models.ImageField(upload_to="product_images/", default="product.jpg")
+    product = models.ForeignKey(Product, related_name="p_images", on_delete=models.SET_NULL, null=True)
     date = models.DateField(auto_now_add=True)
     
     class Meta:
